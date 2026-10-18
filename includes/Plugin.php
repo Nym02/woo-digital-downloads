@@ -23,6 +23,7 @@ use PureCart\Licensing\Module as LicensingModule;
 use PureCart\Subscriptions\Module as SubscriptionsModule;
 use PureCart\Updates\Module as UpdatesModule;
 use PureCart\SaaS\Module as SaasModule;
+use PureCart\API\Settings as SettingsApi;
 use PureCart\CLI\LicenseCommands;
 use PureCart\CLI\SaasCommands;
 
@@ -87,6 +88,7 @@ final class Plugin {
 		new SubscriptionsModule();
 		new UpdatesModule();
 		new SaasModule();
+		( new SettingsApi() )->register();
 
 		if ( is_admin() ) {
 			new Admin();

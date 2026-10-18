@@ -24,12 +24,21 @@ export function Sidebar( {
 	onNav,
 	collapsed,
 	onToggle,
+	enabledModules,
 }: {
 	activePage: Page;
 	onNav: ( p: Page ) => void;
 	collapsed: boolean;
 	onToggle: () => void;
+	enabledModules?: Record< string, boolean >;
 } ) {
+	const visibleItems = NAV_SCHEMA.filter( ( item ) => {
+		if ( ! item.moduleId ) {
+			return true;
+		}
+		return enabledModules ? enabledModules[ item.moduleId ] !== false : true;
+	} );
+
 	return (
 		<aside
 			className="flex flex-col h-full transition-all duration-200 flex-shrink-0"
@@ -87,12 +96,14 @@ export function Sidebar( {
 
 			{ /* ── Nav ── */ }
 			<nav className="flex-1 px-3 overflow-y-auto pb-4">
-				{ NAV_SCHEMA.map( ( item ) => {
+				{ visibleItems.map( ( item, index ) => {
 					const active = activePage === item.id || (
 						// Treat subscription-analytics as subscriptions being active
 						item.id === 'subscriptions' && activePage === 'subscription-analytics'
 					);
 					const Icon = item.icon;
+					const isBeforeSettings = item.id !== 'settings' && visibleItems[ index + 1 ]?.id === 'settings';
+					const showDivider = item.dividerAfter || isBeforeSettings;
 
 					return (
 						<div key={ item.id }>
@@ -140,7 +151,7 @@ export function Sidebar( {
 							</button>
 
 							{ /* Divider after item if flagged */ }
-							{ item.dividerAfter && (
+							{ showDivider && (
 								<hr
 									style={ {
 										border: 'none',

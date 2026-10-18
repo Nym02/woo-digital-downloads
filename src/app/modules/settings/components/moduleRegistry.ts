@@ -27,7 +27,10 @@
  * @since 1.0.0
  */
 
+import type { Page } from '@/shared/types/page';
+
 export interface PluginModule {
+	id: Page;
 	name: string;
 	desc: string;
 	phase: string;
@@ -36,54 +39,63 @@ export interface PluginModule {
 
 export const INITIAL_MODULES: PluginModule[] = [
 	{
+		id: 'downloads',
 		name: 'Secure Downloads',
 		desc: 'Protect download links with expiring tokens',
 		phase: 'Phase 1',
 		enabled: true,
 	},
 	{
+		id: 'licenses',
 		name: 'License Manager',
 		desc: 'Issue and validate software licenses',
 		phase: 'Phase 1',
 		enabled: true,
 	},
 	{
+		id: 'updates',
 		name: 'Update Manager',
 		desc: 'Serve plugin/theme update packages',
 		phase: 'Phase 1',
 		enabled: true,
 	},
 	{
+		id: 'subscriptions',
 		name: 'Subscriptions',
 		desc: 'Recurring billing and subscription management',
 		phase: 'Phase 1',
 		enabled: true,
 	},
 	{
+		id: 'saas-accounts',
 		name: 'SaaS Provisioning',
 		desc: 'Automated account and seat management',
 		phase: 'Phase 2',
 		enabled: true,
 	},
 	{
+		id: 'affiliates',
 		name: 'Affiliate Program',
 		desc: 'Track referrals and manage commissions',
 		phase: 'Phase 2',
 		enabled: true,
 	},
 	{
+		id: 'abandoned-cart',
 		name: 'Abandoned Cart',
 		desc: 'Recover lost sales with automated emails',
 		phase: 'Phase 2',
 		enabled: true,
 	},
 	{
+		id: 'analytics',
 		name: 'Analytics',
 		desc: 'Advanced reporting and revenue dashboards',
 		phase: 'Phase 1',
 		enabled: true,
 	},
 	{
+		id: 'security',
 		name: 'Security Suite',
 		desc: 'Fraud detection and IP blocking',
 		phase: 'Phase 3',

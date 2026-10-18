@@ -22,6 +22,16 @@ defined( 'ABSPATH' ) || exit;
  */
 class OptionKeys {
 
+	// General Plugin Settings
+
+	/**
+	 * Map of enabled/disabled feature modules (module ID => boolean).
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public const ENABLED_MODULES = 'purecart_enabled_modules';
+
 	// Licensing module
 
 	/**

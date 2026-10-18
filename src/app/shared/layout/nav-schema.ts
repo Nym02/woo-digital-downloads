@@ -35,19 +35,21 @@ export const NAV_SCHEMA: Array< {
 	id: Page;
 	icon: React.ElementType;
 	label: string;
+	/** Associated module id for enable/disable gating. */
+	moduleId?: Page;
 	/** Render a horizontal rule after this item. */
 	dividerAfter?: boolean;
 } > = [
 	{ id: 'overview',       icon: LayoutDashboard, label: 'Overview' },
-	{ id: 'licenses',       icon: Key,             label: 'Licenses' },
-	{ id: 'downloads',      icon: Download,        label: 'Downloads' },
-	{ id: 'updates',        icon: RefreshCcw,      label: 'Updates' },
-	{ id: 'subscriptions',  icon: Repeat,          label: 'Subscriptions' },
-	{ id: 'saas-accounts',  icon: Cloud,           label: 'SaaS Accounts' },
-	{ id: 'affiliates',     icon: Users,           label: 'Affiliates' },
-	{ id: 'abandoned-cart', icon: ShoppingCart,    label: 'Abandoned Cart' },
-	{ id: 'security',       icon: Shield,          label: 'Security' },
-	{ id: 'analytics',      icon: BarChart2,       label: 'Analytics', dividerAfter: true },
+	{ id: 'licenses',       icon: Key,             label: 'Licenses',       moduleId: 'licenses' },
+	{ id: 'downloads',      icon: Download,        label: 'Downloads',      moduleId: 'downloads' },
+	{ id: 'updates',        icon: RefreshCcw,      label: 'Updates',        moduleId: 'updates' },
+	{ id: 'subscriptions',  icon: Repeat,          label: 'Subscriptions',  moduleId: 'subscriptions' },
+	{ id: 'saas-accounts',  icon: Cloud,           label: 'SaaS Accounts',  moduleId: 'saas-accounts' },
+	{ id: 'affiliates',     icon: Users,           label: 'Affiliates',     moduleId: 'affiliates' },
+	{ id: 'abandoned-cart', icon: ShoppingCart,    label: 'Abandoned Cart', moduleId: 'abandoned-cart' },
+	{ id: 'security',       icon: Shield,          label: 'Security',       moduleId: 'security' },
+	{ id: 'analytics',      icon: BarChart2,       label: 'Analytics',      moduleId: 'analytics', dividerAfter: true },
 	{ id: 'settings',       icon: SettingsIcon,    label: 'Settings' },
 ];
 

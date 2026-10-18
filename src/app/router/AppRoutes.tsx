@@ -1,5 +1,8 @@
 import { Suspense } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { useAppSelector } from '@/app/store/hooks';
+import { selectEnabledModules } from '@/modules/settings';
+import type { Page } from '@/shared/types/page';
 import {
 	SubscriptionsPage,
 	SubscriptionsPageSkeleton,
@@ -58,6 +61,15 @@ import { SecurityPage } from '@/modules/security';
  */
 export function AppRoutes() {
 	const navigate = useNavigate();
+	const enabledModules = useAppSelector( selectEnabledModules );
+
+	/** Guard route: if module is disabled, redirect to Overview */
+	const guard = ( moduleId: Page, element: JSX.Element ) => {
+		if ( enabledModules && enabledModules[ moduleId ] === false ) {
+			return <Navigate to={ PAGE_PATHS.overview } replace />;
+		}
+		return element;
+	};
 
 	return (
 		<Routes>
@@ -70,140 +82,139 @@ export function AppRoutes() {
 			{ /* Overview */ }
 			<Route
 				path={ PAGE_PATHS.overview }
-				element={
-					<OverviewPage
-						onNav={ ( page ) =>
-							navigate(
-								PAGE_PATHS[ page as keyof typeof PAGE_PATHS ] ??
-									PAGE_PATHS.overview
-							)
-						}
-					/>
-				}
+				element={ <OverviewPage /> }
 			/>
 
 			{ /* Licenses */ }
 			<Route
 				path={ PAGE_PATHS.licenses }
-				element={
+				element={ guard(
+					'licenses',
 					<Suspense
 						key="licenses"
 						fallback={ <LicensesPageSkeleton /> }
 					>
 						<LicensesPage />
 					</Suspense>
-				}
+				) }
 			/>
 			<Route
 				path={ PAGE_PATHS[ 'license-summary' ] }
-				element={ <LicenseSummaryPage /> }
+				element={ guard( 'licenses', <LicenseSummaryPage /> ) }
 			/>
 			<Route
 				path={ LICENSE_DETAIL_PATH }
-				element={
+				element={ guard(
+					'licenses',
 					<Suspense
 						key="license-detail"
 						fallback={ <LicenseDetailPageSkeleton /> }
 					>
 						<LicenseDetailPage />
 					</Suspense>
-				}
+				) }
 			/>
 
 			{ /* Downloads */ }
 			<Route
 				path={ PAGE_PATHS.downloads }
-				element={
+				element={ guard(
+					'downloads',
 					<Suspense key="downloads" fallback={ <DownloadsPageSkeleton /> }>
 						<DownloadsPage />
 					</Suspense>
-				}
+				) }
 			/>
 
 			{ /* Updates */ }
 			<Route
 				path={ PAGE_PATHS.updates }
-				element={
+				element={ guard(
+					'updates',
 					<Suspense
 						key="updates"
 						fallback={ <UpdatesPageSkeleton /> }
 					>
 						<UpdatesPage />
 					</Suspense>
-				}
+				) }
 			/>
 			<Route
 				path="/updates/analytics"
-				element={ <UpdateAnalyticsPage /> }
+				element={ guard( 'updates', <UpdateAnalyticsPage /> ) }
 			/>
 
 			{ /* Subscriptions */ }
 			<Route
 				path={ PAGE_PATHS.subscriptions }
-				element={
+				element={ guard(
+					'subscriptions',
 					<Suspense
 						key="subscriptions"
 						fallback={ <SubscriptionsPageSkeleton /> }
 					>
 						<SubscriptionsPage />
 					</Suspense>
-				}
+				) }
 			/>
 			<Route
 				path={ SUBSCRIPTION_DETAIL_PATH }
-				element={
+				element={ guard(
+					'subscriptions',
 					<Suspense
 						key="subscription-detail"
 						fallback={ <SubscriptionDetailPageSkeleton /> }
 					>
 						<SubscriptionDetailPage />
 					</Suspense>
-				}
+				) }
 			/>
 			<Route
 				path={ PAGE_PATHS[ 'subscription-analytics' ] }
-				element={
+				element={ guard(
+					'subscriptions',
 					<Suspense
 						key="subscription-analytics"
 						fallback={ <SubscriptionAnalyticsPageSkeleton /> }
 					>
 						<SubscriptionAnalyticsPage />
 					</Suspense>
-				}
+				) }
 			/>
 
 			{ /* SaaS Accounts */ }
 			<Route
 				path={ PAGE_PATHS[ 'saas-accounts' ] }
-				element={
+				element={ guard(
+					'saas-accounts',
 					<Suspense
 						key="saas-accounts"
 						fallback={ <SaasAccountsPageSkeleton /> }
 					>
 						<SaasAccountsPage />
 					</Suspense>
-				}
+				) }
 			/>
 
 			{ /* Affiliates */ }
 			<Route
 				path={ PAGE_PATHS.affiliates }
-				element={ <AffiliatesPage /> }
+				element={ guard( 'affiliates', <AffiliatesPage /> ) }
 			/>
 
 			{ /* Abandoned Cart */ }
 			<Route
 				path={ PAGE_PATHS[ 'abandoned-cart' ] }
-				element={ <AbandonedCartPage /> }
+				element={ guard( 'abandoned-cart', <AbandonedCartPage /> ) }
 			/>
 
 			{ /* Security */ }
-			<Route path={ PAGE_PATHS.security } element={ <SecurityPage /> } />
+			<Route path={ PAGE_PATHS.security } element={ guard( 'security', <SecurityPage /> ) } />
 
 			{ /* Analytics */ }
 			<Route
 				path={ PAGE_PATHS.analytics }
-				element={ <AnalyticsPage /> }
+				element={ guard( 'analytics', <AnalyticsPage /> ) }
 			/>
 
 			{ /* Settings */ }

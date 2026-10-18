@@ -5,6 +5,7 @@ import { downloadsReducer } from '@/modules/downloads';
 import { licensesReducer } from '@/modules/licenses';
 import { saasAccountsReducer } from '@/modules/saas-accounts';
 import { notificationsReducer } from '@/modules/notifications';
+import { settingsReducer } from '@/modules/settings';
 
 export const store = configureStore( {
 	reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore( {
 		licenses: licensesReducer,
 		saasAccounts: saasAccountsReducer,
 		notifications: notificationsReducer,
+		settings: settingsReducer,
 	},
 } );
 

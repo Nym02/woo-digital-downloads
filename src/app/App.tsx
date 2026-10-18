@@ -7,6 +7,7 @@ import { AppRoutes, PAGE_PATHS, getPageFromPath } from './router';
 import { useAppSelector } from './store/hooks';
 import { selectSubscriptionById } from '@/modules/subscriptions';
 import { NotificationsMenu } from '@/modules/notifications';
+import { selectEnabledModules } from '@/modules/settings';
 import { getAdminConfig } from '@/shared/wp';
 
 // ─── Root App ──────────────────────────────────────────────────────────────────
@@ -56,6 +57,7 @@ export default function App() {
 	// so keep "Subscriptions" highlighted in the sidebar while viewing one
 	// rather than highlighting nothing at all.
 	const sidebarActivePage: Page = page === 'subscription-detail' ? 'subscriptions' : page;
+	const enabledModules = useAppSelector( selectEnabledModules );
 
 	return (
 		<div
@@ -70,6 +72,7 @@ export default function App() {
 				onNav={ goToPage }
 				collapsed={ collapsed }
 				onToggle={ () => setCollapsed( ( c ) => ! c ) }
+				enabledModules={ enabledModules }
 			/>
 
 			<div className="flex flex-col flex-1 min-w-0 overflow-hidden">

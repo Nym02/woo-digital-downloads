@@ -43,6 +43,7 @@ export interface PurecartAdminConfig {
 	adminUrl?: string;
 	version?: string;
 	currentUser?: PurecartCurrentUser;
+	enabledModules?: Record< string, boolean >;
 }
 
 declare global {

@@ -16,6 +16,8 @@ namespace PureCart\Admin;
 
 defined( 'ABSPATH' ) || exit;
 
+use PureCart\API\Settings as SettingsApi;
+
 /**
  * Admin panel: menus, asset enqueue, settings.
  *
@@ -96,7 +98,24 @@ class Admin {
 			array( 'purecart-settings', __( 'Settings', 'purecart' ), 'manage_options' ),
 		);
 
+		$enabled_modules = SettingsApi::get_enabled_modules();
+		$slug_to_module  = array(
+			'purecart-licenses'       => 'licenses',
+			'purecart-downloads'      => 'downloads',
+			'purecart-updates'        => 'updates',
+			'purecart-subscriptions'  => 'subscriptions',
+			'purecart-saas-accounts'  => 'saas-accounts',
+			'purecart-affiliates'     => 'affiliates',
+			'purecart-abandoned-cart' => 'abandoned-cart',
+			'purecart-security'       => 'security',
+			'purecart-analytics'      => 'analytics',
+		);
+
 		foreach ( $nav_items as list($slug, $label, $capability) ) {
+			if ( isset( $slug_to_module[ $slug ] ) && empty( $enabled_modules[ $slug_to_module[ $slug ] ] ) ) {
+				continue;
+			}
+
 			add_submenu_page(
 				'purecart-dashboard',
 				/* translators: %s = module name */
@@ -178,8 +197,9 @@ class Admin {
 				'apiUrl'      => esc_url_raw( rest_url( PURECART_API_NAMESPACE . '/' ) ),
 				'adminUrl'    => esc_url_raw( admin_url() ),
 				'currentPage' => $current_page,
-				'version'     => PURECART_VERSION,
-				'currentUser' => $this->current_user_payload(),
+				'version'        => PURECART_VERSION,
+				'currentUser'    => $this->current_user_payload(),
+				'enabledModules' => SettingsApi::get_enabled_modules(),
 			)
 		);
 
