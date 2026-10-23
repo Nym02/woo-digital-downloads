@@ -1,5 +1,5 @@
 import { Suspense } from 'react';
-import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAppSelector } from '@/app/store/hooks';
 import { selectEnabledModules } from '@/modules/settings';
 import type { Page } from '@/shared/types/page';
@@ -23,7 +23,7 @@ import {
 } from './paths';
 
 // Overview
-import { OverviewPage } from '@/modules/overview';
+import { OverviewPage, OverviewPageSkeleton } from '@/modules/overview';
 
 // Downloads
 import { DownloadsPage, DownloadsPageSkeleton } from '@/modules/downloads';
@@ -60,7 +60,6 @@ import { SecurityPage } from '@/modules/security';
  * regardless of declaration order.
  */
 export function AppRoutes() {
-	const navigate = useNavigate();
 	const enabledModules = useAppSelector( selectEnabledModules );
 
 	/** Guard route: if module is disabled, redirect to Overview */
@@ -82,7 +81,11 @@ export function AppRoutes() {
 			{ /* Overview */ }
 			<Route
 				path={ PAGE_PATHS.overview }
-				element={ <OverviewPage /> }
+				element={
+					<Suspense key="overview" fallback={ <OverviewPageSkeleton /> }>
+						<OverviewPage />
+					</Suspense>
+				}
 			/>
 
 			{ /* Licenses */ }
